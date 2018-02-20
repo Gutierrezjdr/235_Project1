@@ -4,7 +4,7 @@ using namespace std;
 string set; //input given by the user
 string elmnt; //element pulled out of input
 int elmntN=0; //locationg where elements will be stored in array
-string Subset(int subLength,int elmntN, string array[]);
+string Subset(int subLength,int elmntN,int dist, string array[]);
 int main(){
    cout<<"Enter the set of elements: ";
    cin>>set;
@@ -29,29 +29,42 @@ int main(){
     }//end of if statement
   }//end of for loop
   int subLength=elmntN+1;
-  
+  int dist=0; 
+  int max=elmntN;
   string subset;
   for( int i=1;i<=subLength;i++){				//for loop that goes through all lengths of sub set 
     for(int j=0;j<=elmntN;j++){
-	cout<<" { "<<Subset(i,j,elmntArray)<<" }"<<endl;
+        dist = j+1;
+	if(i==1){
+	  cout<<" { "<<Subset(i,j,dist,elmntArray)<<" }"<<endl;    
+        }else{
+          while(dist<=max){
+	   cout<<" { "<<Subset(i,j,dist,elmntArray)<<" }"<<endl;    
+           cout<<"Dist: "<<dist<<" Max: "<<max<<endl;
+           //  cout<<" I: "<<i<<" J: "<<j<<" Subset:"<<subset<<endl;
+           dist++; 
+          }
+          dist=0;
+        } 
         
-       //  cout<<" I: "<<i<<" J: "<<j<<" Subset:"<<subset<<endl;
     }
   }
 
 }
 
-string Subset(int subLength, int elmntN, string elmntArray[]){
+string Subset(int subLength, int elmnt,int dist, string elmntArray[]){
   string subset;
   if(subLength==1){
-   elmntArray[elmntN];
-   cout<<" I: "<<subLength<<" J: "<<elmntN<<" Subset:"<<subset<<endl;
-   return elmntArray[elmntN];
-  }else if(elmntArray[elmntN+1]!="\0"){
-   subset+=elmntArray[elmntN];
+   elmntArray[elmnt];
+   cout<<" I: "<<subLength<<" J: "<<elmnt<<" Subset:"<<subset<<endl;
+   return elmntArray[elmnt];
+  }else if(elmntArray[elmnt+1]!="\0"&&subLength>1){
+ 
+   subset+=elmntArray[elmnt];
    subset+=",";
-   subset+=Subset(subLength-1,elmntN+1,elmntArray);  
+   subset+=Subset(subLength-1,elmnt+dist,dist,elmntArray);  
    cout<<" I: "<<subLength<<" J: "<<elmntN<<" Subset:"<<subset<<endl;
    return subset;
+ 
   }
 }
